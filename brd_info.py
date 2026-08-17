@@ -1,4 +1,87 @@
 #!/usr/bin/python3
+import sys
+import subprocess
+import importlib.util
+import platform
+
+def get_linux_distro():
+    """Identifies if the system is Debian/Ubuntu or AlmaLinux/RHEL."""
+    try:
+        # Read the OS identification file
+        with open("/etc/os-release", "r") as f:
+            os_info = f.read().lower()
+            
+        if "ubuntu" in os_info or "debian" in os_info:
+            return "debian"
+        elif "almalinux" in os_info or "rhel" in os_info or "centos" in os_info:
+            return "almalinux"
+    except FileNotFoundError:
+        pass
+    return None
+
+def install_system_package(package_name, distro):
+    """Runs the correct system package manager command using sudo."""
+    if distro == "debian":
+        print(f"System identified as Debian/Ubuntu. Using APT to install {package_name}...")
+        # Update package lists first, then install
+        subprocess.check_call(["sudo", "apt-get", "update", "-y"])
+        subprocess.check_call(["sudo", "apt-get", "install", "-y", package_name])
+        
+    elif distro == "almalinux":
+        print(f"System identified as AlmaLinux/RHEL. Using DNF to install {package_name}...")
+        # Install directly using DNF
+        subprocess.check_call(["sudo", "dnf", "install", "-y", package_name])
+
+def import_or_install_system(package_name, import_name=None):
+    """
+    Checks for a Python module. 
+    If missing, detects the Linux OS and installs it via apt or dnf.
+    """
+    if import_name is None:
+        import_name = package_name
+
+    # Step 1: Check if the module is already available
+    spec = importlib.util.find_spec(import_name)
+    if spec is not None:
+        print(f"Success: '{import_name}' is already installed.")
+        return
+
+    print(f"'{import_name}' not found. Attempting system installation...")
+
+    # Step 2: Detect the Linux distribution
+    distro = get_linux_distro()
+    if not distro:
+        print("Error: Unsupported OS. This script requires Debian, Ubuntu, or AlmaLinux.")
+        sys.exit(1)
+
+    # Step 3: Map the module to the OS package format (usually python3-modulename)
+    # Example: 'requests' becomes 'python3-requests'
+    os_package_name = f"python3-{package_name}"
+
+    try:
+        # Step 4: Install using the native package manager
+        install_system_package(os_package_name, distro)
+        
+        # Step 5: Verify the installation worked
+        spec = importlib.util.find_spec(import_name)
+        if spec is not None:
+            print(f"Success: '{package_name}' was successfully installed via system manager.")
+        else:
+            raise ImportError("Module still not importable after installation.")
+            
+    except subprocess.CalledProcessError as e:
+        print(f"Error: Failed to install package. (Command exited with error code {e.returncode})")
+        print("Make sure this script is run with sudo permissions or as a root user.")
+        sys.exit(1)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        sys.exit(1)
+
+# --- Example Usage ---
+# We will use 'requests' as an example, which maps to 'python3-requests' on both platforms.
+import_or_install_system("smbus")
+
+# Now you can safely import it
 import smbus;
 import subprocess;
 
