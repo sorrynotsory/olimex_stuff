@@ -142,6 +142,7 @@ if (BoardID==9223): BoardName = "T2-OLinuXino-LIME2-IND"
 if (BoardID==9227): BoardName = "T2-OLinuXino-LIME2-s16MB-IND"
 if (BoardID==9231): BoardName = "T2-OLinuXino-LIME2-e4GB-IND"
 if (BoardID==9538): BoardName = "T2-OLinuXino-LIME2-e16Gs16M-IND"
+if (BoardID==11439): BoardName = "T2-OLinuXino-LIME2-e16Gs16M-IND"
 
 # --- A20-OLinuXino-MICRO Variants ---
 if (BoardID==4614): BoardName = "A20-OLinuXino-MICRO"
@@ -170,10 +171,13 @@ if (BoardID==8946): BoardName = "A20-OLinuXino-LIME2-s16MB"
 if (BoardID==8832): BoardName = "A20-OLinuXino-MICRO-e4GB"
 if (BoardID==8918): BoardName = "A20-OLinuXino-MICRO-n8GB"
 
-if (block[9] == 255):
-  block[9] = 0
+# --- Additional T2 Industrial grade Variants ---
+if (BoardID==11439): BoardName = "T2-OLinuXino-LIME2-e16GB-IND"
 
-print("Board: {} Rev.{}{}, Serial: {}, ID: {}".format(BoardName, chr(block[8]), chr(block[9]), hex(BoardSerial), BoardID))
+# Safely convert the minor revision to a string, ignoring 255 (blank)
+rev_minor = chr(block[9]) if block[9] != 255 else ""
+
+print("Board: {} Rev.{}{}, Serial: {}, ID: {}".format(BoardName, chr(block[8]), rev_minor, hex(BoardSerial), BoardID))
 
 if (block[14] == 0x00):
   print("External memory: None")
