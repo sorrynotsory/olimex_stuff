@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import sys
 import subprocess
 import importlib.util
@@ -117,17 +117,22 @@ BoardID = (block[7] << 24) | (block[6] << 16) | (block[5] << 8) | block[4]
 BoardSerial = (block[13] << 24) | (block[12] << 16) | (block[11] << 8) | block[10]
 
 BoardName = "Unknown Board"
-
 # --- A20-OLinuXino-LIME Variants ---
 if (BoardID==7739): BoardName = "A20-OLinuXino-LIME"
 if (BoardID==7743): BoardName = "A20-OLinuXino-LIME-n4GB"
 if (BoardID==8934): BoardName = "A20-OLinuXino-LIME-n8GB"
 if (BoardID==9076): BoardName = "A20-OLinuXino-LIME-s16MB"
+if (BoardID==9160): BoardName = "A20-OLinuXino-LIME-e4GB"
+if (BoardID==9516): BoardName = "A20-OLinuXino-LIME-e16Gs16M"
+if (BoardID==9696): BoardName = "A20-OLinuXino-LIME-e4Gs16M"
 
 # --- T2-OLinuXino-LIME Industrial Variants ---
 if (BoardID==9211): BoardName = "T2-OLinuXino-LIME-IND"
 if (BoardID==9215): BoardName = "T2-OLinuXino-LIME-s16MB-IND"
 if (BoardID==9219): BoardName = "T2-OLinuXino-LIME-e4GB-IND"
+if (BoardID==9734): BoardName = "T2-OLinuXino-LIME-e4Gs16M-IND"
+if (BoardID==10481): BoardName = "T2-OLinuXino-LIME-e8Gs16M-IND"
+if (BoardID==11444): BoardName = "T2-OLinuXino-LIME-e16Gs16M-IND"
 
 # --- A20-OLinuXino-LIME2 Variants ---
 if (BoardID==7701): BoardName = "A20-OLinuXino-LIME2"
@@ -136,11 +141,16 @@ if (BoardID==8910): BoardName = "A20-OLinuXino-LIME2-n8GB"
 if (BoardID==8340): BoardName = "A20-OLinuXino-LIME2-e4GB"
 if (BoardID==9166): BoardName = "A20-OLinuXino-LIME2-e16GB"
 if (BoardID==9604): BoardName = "A20-OLinuXino-LIME2-e16Gs16M"
+if (BoardID==9613): BoardName = "A20-OLinuXino-LIME2-e4Gs16M"
+if (BoardID==9905): BoardName = "A20-OLinuXino-LIME2-G2"
 
 # --- T2-OLinuXino-LIME2 Industrial Variants ---
 if (BoardID==9223): BoardName = "T2-OLinuXino-LIME2-IND"
 if (BoardID==9227): BoardName = "T2-OLinuXino-LIME2-s16MB-IND"
 if (BoardID==9231): BoardName = "T2-OLinuXino-LIME2-e4GB-IND"
+if (BoardID==9239): BoardName = "T2-OLinuXino-LIME2-IND"
+if (BoardID==9247): BoardName = "T2-OLinuXino-LIME2-s16M-IND"
+if (BoardID==9243): BoardName = "T2-OLinuXino-LIME2-e8Gs16M-IND"
 if (BoardID==9538): BoardName = "T2-OLinuXino-LIME2-e16Gs16M-IND"
 if (BoardID==11439): BoardName = "T2-OLinuXino-LIME2-e16Gs16M-IND"
 
@@ -150,6 +160,17 @@ if (BoardID==4615): BoardName = "A20-OLinuXino-MICRO-n4GB"
 if (BoardID==9042): BoardName = "A20-OLinuXino-MICRO-e4GB"
 if (BoardID==8828): BoardName = "A20-OLinuXino-MICRO-IND"
 if (BoardID==8661): BoardName = "A20-OLinuXino-MICRO-e4GB-IND"
+if (BoardID==9231): BoardName = "A20-OLinuXino-MICRO-s16M"
+if (BoardID==9684): BoardName = "A20-OLinuXino-MICRO-e4Gs16M"
+if (BoardID==9689): BoardName = "A20-OLinuXino-MICRO-e16Gs16M"
+
+# --- T2-OLinuXino-MICRO Industrial Variants ---
+if (BoardID==9223): BoardName = "T2-OLinuXino-MICRO-IND"
+if (BoardID==9227): BoardName = "T2-OLinuXino-MICRO-e4G-IND"
+if (BoardID==9235): BoardName = "T2-OLinuXino-MICRO-s16M-IND"
+if (BoardID==9739): BoardName = "T2-OLinuXino-MICRO-e4Gs16M-IND"
+if (BoardID==9789): BoardName = "T2-OLinuXino-MICRO-e8Gs16M-IND"
+if (BoardID==11449): BoardName = "T2-OLinuXino-MICRO-e16Gs16M-IND"
 
 # --- A20-SOM (System on Module) Variants ---
 if (BoardID==6317): BoardName = "A20-SOM"
@@ -157,11 +178,55 @@ if (BoardID==6515): BoardName = "A20-SOM-n4GB"
 if (BoardID==8811): BoardName = "A20-SOM-e4GB"
 if (BoardID==9100): BoardName = "A20-SOM-IND"
 if (BoardID==8824): BoardName = "A20-SOM-e4GB-IND"
+if (BoardID==4673): BoardName = "A20-SOM-n4GB"
+if (BoardID==7664): BoardName = "A20-SOM"
+if (BoardID==8849): BoardName = "A20-SOM-IND"
+if (BoardID==8922): BoardName = "A20-SOM-n8GB"
+if (BoardID==9155): BoardName = "A20-SOM-e16GB"
+if (BoardID==9148): BoardName = "A20-SOM-e16GB-IND"
+if (BoardID==9047): BoardName = "A20-SOM-e16Gs16M"
+
+# --- T2-SOM Industrial Variants ---
+if (BoardID==9259): BoardName = "T2-SOM-IND"
+if (BoardID==9827): BoardName = "T2-SOM-e8Gs16M-IND"
+if (BoardID==11454): BoardName = "T2-SOM-e16Gs16M-IND"
 
 # --- A20-SOM204 Variants ---
 if (BoardID==8958): BoardName = "A20-SOM204"
 if (BoardID==8991): BoardName = "A20-SOM204-1G-e4GB"
 if (BoardID==10257): BoardName = "A20-SOM204-IND"
+if (BoardID==8958): BoardName = "A20-SOM204-1Gs16Me16G-MC"
+if (BoardID==10257): BoardName = "A20-SOM204-1G-M"
+
+# --- T2-SOM204 Industrial Variants ---
+if (BoardID==10157): BoardName = "T2-SOM204-1Gs16Me4G-C-I"
+if (BoardID==10234): BoardName = "T2-SOM204-1Gs16Me8G-MC-I"
+if (BoardID==11458): BoardName = "T2-SOM204-1Gs16Me16G-M-I"
+if (BoardID==11462): BoardName = "T2-SOM204-1Gs16Me16G-MC-I"
+if (BoardID==10238): BoardName = "T2-SOM204-1G-I"
+
+# --- A64-OLinuXino Variants ---
+if (BoardID==8861): BoardName = "A64-OLinuXino-2Ge8G-IND"
+if (BoardID==9065): BoardName = "A64-OLinuXino-1Gs16M"
+if (BoardID==8367): BoardName = "A64-OLinuXino-1Ge4GW"
+if (BoardID==8857): BoardName = "A64-OLinuXino-1G"
+if (BoardID==9849): BoardName = "A64-OLinuXino-1Ge16GW"
+if (BoardID==10728): BoardName = "A64-OLinuXino-1Ge16GW-EA"
+
+# --- A13-OLinuXino / SOM Variants ---
+if (BoardID==4432): BoardName = "A13-OLinuXino"
+if (BoardID==4787): BoardName = "A13-SOM-256"
+if (BoardID==4788): BoardName = "A13-SOM-512"
+
+# --- A10-OLinuXino Variants ---
+if (BoardID==10663): BoardName = "A10-OLinuXino-LIME-e16Gs16M"
+if (BoardID==8950): BoardName = "A10-OLinuXino-LIME-n8GB"
+if (BoardID==4746): BoardName = "A10-OLinuXino-LIME"
+
+# --- STMP157-OLinuXino Variants ---
+if (BoardID==10469): BoardName = "STMP157-OLinuXino-LIME2H-IND"
+if (BoardID==10887): BoardName = "STMP157-OLinuXino-LIME2H-EXT"
+if (BoardID==10997): BoardName = "STMP157-OLinuXino-LIME2-EXT"
 
 # --- Additional LIME2 Specialized Variants ---
 if (BoardID==8978): BoardName = "A20-OLinuXino-Lime2-Light-e4GB"
